@@ -7,15 +7,21 @@
 %From Handsfield et al., 2014 JBiomech
 %Standard value for rho from Rajagopal et al., 2015 = 60
 
-function modelOut = computeHandsfieldMaxIsoForces(modelIn, acquisitionInfo, rho, modelOutName)
+clc; clear; close all;
+
 %% Assign Handsfield Muscle Volume Fractions (from Appendix A. Supplementary materials)
 %Works with any model if you change the fieldnames and adjust the compartmented muscles (e.g. glmax1)
 %(this version coded for the Rajagopal_2015 model)
 
+modelIn='myInputModel.osim';
+load('acquisitionInfo.mat');
+rho=60;
+modelOut='myOutputModel.osim';
+
 make_plots = true; %Plot comparisson of generic vs adjusted maxIsoForces
 % make_plots = false;
 
-figure_folder = modelOutName(1:find(modelOutName == '\', 1, 'last'));
+figure_folder = modelOut(1:find(modelOut == '\', 1, 'last'));
 
 muscleVolumeFractions.addbrev = 0.0147;
 muscleVolumeFractions.addlong = 0.0226;
@@ -190,7 +196,7 @@ end
 
 %% Print model with new muscle strengths
 model.setName([acquisitionInfo.Subject.Code, '_strengthAdjusted']);
-modelOut = modelOutName;
+modelOut = modelOut;
 model.print(modelOut);
 disp(['The new model has been saved at ' modelOut]);
 
